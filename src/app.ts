@@ -1,7 +1,6 @@
 import express from "express";
 import authRouter from "./routes/auth.js";
 import { connectToDb } from "./models/User.js";
-import mongoose from "mongoose";
 import type { Request, Response, NextFunction } from "express";
 
 interface ApiError extends Error {

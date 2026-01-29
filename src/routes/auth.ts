@@ -30,7 +30,7 @@ routes.post('/register', async (req, res) => {
     profile: profile,
   }
 
-  res.status(201).send("User registered")
+  res.status(201).send(userDto)
 })
 
 routes.get('/verify-email', async( req, res) => {
