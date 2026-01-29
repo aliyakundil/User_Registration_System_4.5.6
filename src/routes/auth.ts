@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken"
 import User from "../models/User.js"
 import dotenv from "dotenv";
 import { registerUser } from "../services/registrationService.js";
-import { devNull } from "node:os";
 
 const routes = Router();
 
@@ -12,12 +11,8 @@ dotenv.config();
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
-function generateAccessToken(userId: string) {
-  return jwt.sign(userId, ACCESS_TOKEN_SECRET!, {expiresIn: "30s"})
-}
-
 routes.post('/register', async (req, res) => {
-  const { email, password, username, profile } = req.body;
+  const { email, password, username, profile, isEmailVerified } = req.body;
   const { firstName, lastName, bio } = profile || {};
 
   const users = await registerUser(req.body);
@@ -28,7 +23,12 @@ routes.post('/register', async (req, res) => {
 
   if (!users) return null;
 
-  console.log(users);
+  const userDto = {
+    email: email,
+    username: username,
+    isEmailVerified: isEmailVerified,
+    profile: profile,
+  }
 
   res.status(201).send("User registered")
 })
